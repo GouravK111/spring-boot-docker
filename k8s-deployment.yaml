@@ -1,21 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-boot-k8s
+   name: helloworld-k8s-service
+   labels:
+    AllowContainerWithoutResourcesRequests: "true"
 spec:
-  selector:
+   selector:
     matchLabels:
       app: spring-boot-k8s
-  replicas: 3
-  template:
+   replicas: 1
+   template:
     metadata:
-      labels:
-        app: spring-boot-k8s
+     labels:
+      app: spring-boot-k8s
+      AllowRootUserAccess: "true"
     spec:
-      containers:
+       containers:
        - name: spring-boot-k8s
-         image: app:latest
-         imagePullPolicy: IfNotPresent       
+         image: cp-nexus-0.novalocal:5002/docker-image:latest
+         securityContext:
+           allowPrivilegeEscalation: false
+           privileged: false
          ports:
-           - containerPort: 8080         
-  
+         - containerPort: 88
